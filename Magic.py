@@ -2,7 +2,7 @@
 import sys
 import time
 import pygame
-from random import choice
+from random import choice, randint
 
 class magic:
     def __init__(self):
@@ -10,6 +10,7 @@ class magic:
         self.screen = pygame.display.set_mode((480, 490))
         pygame.display.set_caption("Magic 8 ball")
         self.font = pygame.font.SysFont('Helvetica', 35)
+        self.block()
         bg = pygame.image.load("magic.jpg")
         self.screen.blit(bg, [0, 0])
         self.draw()
@@ -17,7 +18,22 @@ class magic:
         self.y = 365
         self.w = 90
         self.h = 60
-        
+
+    def block(self):
+        RAND = (randint(0, 255), randint(0, 255), randint(0, 255)) #random color
+        y = 0
+        y1 = 30
+        for i in range(10):
+            x = 0
+            x1 = 30
+            for i in range(10):
+                pygame.draw.rect(self.screen, RAND, (x, y, 60, 30), 2)
+                pygame.draw.rect(self.screen, RAND, (x1, y1, 60, 30), 2)
+                x+=60
+                x1 += 60
+            y+=60
+            y1+= 60
+   
     def draw(self):
         global WHITE, BLACK, SILVER, DarkGrey, lemon
         lemon = (0, 255, 0)
@@ -49,11 +65,16 @@ class magic:
                         pygame.draw.rect(self.screen, SILVER, (250, 365, 90, 60), 2)
                         self.screen.blit(self.font.render('ans', True,  lemon), (265, 370))
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                     if pos[0] > self.x and pos[0] < self.x + self.w:
-                        if pos[1] > self.y and pos[1] < self.y + self.h:
-                            text = ['yes', 'no', 'YES', 'NO', 'hmm', 'never', 'maybe', 'yeah', 'yup', 'nope', 'well...']
-                            tell = choice(text)
-                            self.screen.blit(self.font.render(f'{tell}', True, WHITE), (205, 176))
+                    #  if pos[0] > self.x and pos[0] < self.x + self.w:
+                    #     if pos[1] > self.y and pos[1] < self.y + self.h:
+                    self.screen = pygame.display.set_mode((480, 490))
+                    self.block()
+                    bg = pygame.image.load("magic.jpg")
+                    self.screen.blit(bg, [0, 0])
+                    self.draw()
+                    text = ['yes', 'no', 'YES', 'NO', 'hmm', 'never', 'maybe', 'yeah', 'yup', 'nope', 'well...']
+                    tell = choice(text)
+                    self.screen.blit(self.font.render(f'{tell}', True, WHITE), (205, 176))
 
             pygame.display.update()
             pygame.display.flip()
@@ -61,4 +82,3 @@ class magic:
 if __name__=='__main__':
     AI = magic()
     AI.perform()
-
